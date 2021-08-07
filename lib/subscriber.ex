@@ -74,6 +74,18 @@ defmodule Subscriber do
     end
   end
 
+  def delete(phone_number) do
+    IO.puts(phone_number)
+    subscriber = find_subscriber(phone_number)
+
+    read(subscriber.plan_type)
+    |> List.delete(subscriber)
+    |> :erlang.term_to_binary()
+    |> write(subscriber.plan_type)
+
+    {:ok, "Subscriber #{subscriber.name} succesfully deleted"}
+  end
+
   def write(subscriber_list, plan_type) do
     File.write!(@subscriber_file[plan_type], subscriber_list)
   end

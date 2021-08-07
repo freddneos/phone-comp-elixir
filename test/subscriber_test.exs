@@ -38,6 +38,13 @@ defmodule SubscriberTest do
       assert Subscriber.register("Fredd", "+123123", "XY0111", :postpaid) ==
                {:error, "Subscriber already registered."}
     end
+
+    test "Delete subscriber" do
+      Subscriber.register("Fredd", "+42211", "GR0100", :postpaid)
+      Subscriber.register("Jony", "+35111", "GR0130", :prepaid)
+
+      assert Subscriber.delete("+42211") == {:ok, "Subscriber Fredd succesfully deleted"}
+    end
   end
 
   describe "find subscriber tests" do
