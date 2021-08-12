@@ -23,7 +23,7 @@ defmodule SubscriberTest do
     end
 
     test "Create a prepaid subscription" do
-      assert Subscriber.register("Fredd", "+123123", "XY0111") ==
+      assert Subscriber.register("Fredd", "+123123", "XY0111", :prepaid) ==
                {:ok, "Subscriber registered succesfully."}
     end
 
@@ -44,6 +44,19 @@ defmodule SubscriberTest do
       Subscriber.register("Jony", "+35111", "GR0130", :prepaid)
 
       assert Subscriber.delete("+42211") == {:ok, "Subscriber Fredd succesfully deleted"}
+    end
+
+    test "try to update subscriber" do
+      Subscriber.register("Fredd", "+322111", "GRE010101", :postpaid)
+      subscriber = Subscriber.find_subscriber("+322111", :postpaid)
+
+      updated_subscriber = %Subscriber{
+        subscriber
+        | calls: subscriber.calls ++ [%Call{data: nil, duration: nil}]
+      }
+
+      assert Subscriber.update("+322111", updated_subscriber) ==
+               {:ok, "Subscriber #{subscriber.name} succesfully updated."}
     end
   end
 
